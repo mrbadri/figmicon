@@ -28,7 +28,7 @@ program
     const filePath = path.join(outDir, "sample.svg");
     await fs.writeFile(filePath, sampleSvg, "utf8");
 
-    console.log(green("✔ fetch is working"));
+    console.log(green("✔ fetch is working 2"));
     console.log(cyan(`→ wrote ${filePath}`));
   });
 

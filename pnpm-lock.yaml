@@ -27,11 +27,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/acme-utils
       '@figmicon/core':
-        specifier: ^1.0.0
-        version: 1.0.0
-      '@figmicon/core2':
-        specifier: ^1.0.1
-        version: 1.0.1
+        specifier: workspace:*
+        version: link:../../packages/figmicon-core
       next:
         specifier: ^14.1.1
         version: 14.1.1(react-dom@18.2.0)(react@18.2.0)
@@ -60,34 +57,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.19
         version: 18.2.19
-      typescript:
-        specifier: 5.5.4
-        version: 5.5.4
-
-  packages/acme-core:
-    dependencies:
-      commander:
-        specifier: ^14.0.0
-        version: 14.0.0
-      kolorist:
-        specifier: ^1.8.0
-        version: 1.8.0
-    devDependencies:
-      '@acme/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@acme/tsconfig':
-        specifier: workspace:*
-        version: link:../acme-tsconfig
-      '@types/node':
-        specifier: ^20.11.24
-        version: 20.11.24
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.0
-      tsup:
-        specifier: ^8.0.2
-        version: 8.0.2(typescript@5.5.4)
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -145,6 +114,34 @@ importers:
       eslint-plugin-only-warn:
         specifier: ^1.1.0
         version: 1.1.0
+      typescript:
+        specifier: 5.5.4
+        version: 5.5.4
+
+  packages/figmicon-core:
+    dependencies:
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.0
+      kolorist:
+        specifier: ^1.8.0
+        version: 1.8.0
+    devDependencies:
+      '@acme/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@acme/tsconfig':
+        specifier: workspace:*
+        version: link:../acme-tsconfig
+      '@types/node':
+        specifier: ^20.11.24
+        version: 20.11.24
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      tsup:
+        specifier: ^8.0.2
+        version: 8.0.2(typescript@5.5.4)
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -821,22 +818,6 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
-
-  /@figmicon/core2@1.0.1:
-    resolution: {integrity: sha512-244UM2qSqrc0PRKwNW2gaOKFt1hz0y+LclJ/4/OVT94IgRPHhGp+MSpbavec2Y1sNiyfcOEFJeQ6/O56NQHOhA==}
-    hasBin: true
-    dependencies:
-      commander: 14.0.0
-      kolorist: 1.8.0
-    dev: false
-
-  /@figmicon/core@1.0.0:
-    resolution: {integrity: sha512-A68OOcaa+qqkwB9PPLVThvjNFfxpGMtEsZ2Bxq08vgm5i6DKZGCuRv6nOJpiB79xmChT4uhURG+YdjnYU0Vs+w==}
-    hasBin: true
-    dependencies:
-      commander: 14.0.0
-      kolorist: 1.8.0
-    dev: false
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -5107,6 +5088,7 @@ packages:
   /typescript@5.5.4:
     resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
+    hasBin: true
     dev: true
 
   /unbox-primitive@1.0.2:
