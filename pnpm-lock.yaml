@@ -23,12 +23,15 @@ importers:
 
   apps/docs:
     dependencies:
-      '@acme/core':
-        specifier: workspace:*
-        version: link:../../packages/acme-core
       '@acme/utils':
         specifier: workspace:*
         version: link:../../packages/acme-utils
+      '@figmicon/core':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@figmicon/core2':
+        specifier: ^1.0.1
+        version: 1.0.1
       next:
         specifier: ^14.1.1
         version: 14.1.1(react-dom@18.2.0)(react@18.2.0)
@@ -63,9 +66,12 @@ importers:
 
   packages/acme-core:
     dependencies:
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.0
+      kolorist:
+        specifier: ^1.8.0
+        version: 1.8.0
     devDependencies:
       '@acme/eslint-config':
         specifier: workspace:*
@@ -73,12 +79,9 @@ importers:
       '@acme/tsconfig':
         specifier: workspace:*
         version: link:../acme-tsconfig
-      '@types/react':
-        specifier: ^18.2.61
-        version: 18.2.61
-      '@types/react-dom':
-        specifier: ^18.2.19
-        version: 18.2.19
+      '@types/node':
+        specifier: ^20.11.24
+        version: 20.11.24
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -818,6 +821,22 @@ packages:
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@figmicon/core2@1.0.1:
+    resolution: {integrity: sha512-244UM2qSqrc0PRKwNW2gaOKFt1hz0y+LclJ/4/OVT94IgRPHhGp+MSpbavec2Y1sNiyfcOEFJeQ6/O56NQHOhA==}
+    hasBin: true
+    dependencies:
+      commander: 14.0.0
+      kolorist: 1.8.0
+    dev: false
+
+  /@figmicon/core@1.0.0:
+    resolution: {integrity: sha512-A68OOcaa+qqkwB9PPLVThvjNFfxpGMtEsZ2Bxq08vgm5i6DKZGCuRv6nOJpiB79xmChT4uhURG+YdjnYU0Vs+w==}
+    hasBin: true
+    dependencies:
+      commander: 14.0.0
+      kolorist: 1.8.0
+    dev: false
 
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2004,6 +2023,11 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: true
 
+  /commander@14.0.0:
+    resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
+    engines: {node: '>=20'}
+    dev: false
+
   /commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
@@ -2372,6 +2396,7 @@ packages:
 
   /eslint-config-prettier@9.1.0(eslint@8.57.1):
     resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
+    hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
@@ -3642,6 +3667,10 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /kolorist@1.8.0:
+    resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
+    dev: false
+
   /language-subtag-registry@0.3.22:
     resolution: {integrity: sha512-tN0MCzyWnoz/4nHS6uxdlFWoUZT7ABptwKPQ52Ea7URk6vll88bWBVhodtnlfEuCcKWNGoc+uGbw1cwa9IKh/w==}
     dev: true
@@ -3863,6 +3892,7 @@ packages:
   /next@14.1.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-McrGJqlGSHeaz2yTRPkEucxQKe5Zq7uPwyeHNmJaZNY4wx9E9QdxmTp310agFRoMuIYgQrCrT3petg13fSVOww==}
     engines: {node: '>=18.17.0'}
+    hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
       react: ^18.2.0
@@ -4890,6 +4920,7 @@ packages:
   /tsup@8.0.2(typescript@5.5.4):
     resolution: {integrity: sha512-NY8xtQXdH7hDUAZwcQdY/Vzlw9johQsaqf7iwZ6g1DOUlFYQ5/AtVAjTvihhEyeRlGo4dLRVHtrRaL35M1daqQ==}
     engines: {node: '>=18'}
+    hasBin: true
     peerDependencies:
       '@microsoft/api-extractor': ^7.36.0
       '@swc/core': ^1
@@ -5098,6 +5129,7 @@ packages:
 
   /update-browserslist-db@1.0.13(browserslist@4.22.1):
     resolution: {integrity: sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==}
+    hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
     dependencies:
