@@ -18,11 +18,11 @@ export default defineConfig([
   {
     entry: { index: "src/index.ts" },
     outDir: "dist",
-    format: ["esm"],
+    format: ["esm", "cjs"],
     splitting: false,
     sourcemap: true,
     clean: false,
     target: "node18",
-    dts: true, // فایل‌های .d.ts می‌سازه
+    dts: true,
   },
 ]);

@@ -1,40 +1,26 @@
 import { Command } from "commander";
-import { green, cyan } from "kolorist";
-import fs from "node:fs/promises";
-import path from "node:path";
-import { loadConfig } from "./config.js";
+
+import { fetchCommand } from "./command/fetch/index.js";
 
 const program = new Command();
 
 program
-  .name("acme")
+  .name("figmicon")
   .description(
     "Fetch icons from Figma and build React components or sprite.svg"
   )
-  .version("0.1.0");
+  .version("1.0.1");
 
-// نمونه‌ی ساده: یک فایل SVG تمرینی می‌سازد تا خروجی را تست کنی
+// fetch command
 program
   .command("fetch")
   .description("Fetch SVG icons from Figma by node IDs (demo write)")
   .option("-o, --out <dir>", "Output folder for raw SVGs", "tmp/icons")
-  .action(async ({ out }) => {
-    const outDir = path.resolve(process.cwd(), out);
-    await fs.mkdir(outDir, { recursive: true });
-
-    const sampleSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-  <path d="M5 12h14" stroke="currentColor" fill="none" stroke-width="2"/>
-  <path d="M13 5l7 7-7 7" stroke="currentColor" fill="none" stroke-width="2"/>
-</svg>`;
-    const filePath = path.join(outDir, "sample.svg");
-    await fs.writeFile(filePath, sampleSvg, "utf8");
-    console.log(green("✔ fetch is working 4"));
-    const config = await loadConfig();
-    console.log("config", config);
-    console.log(cyan(`→ wrote ${filePath}`));
+  .action(async () => {
+    await fetchCommand();
   });
 
-// نمونه‌ی بسیار ساده‌ی دوم
+// hello command
 program
   .command("hello")
   .description("Prints a greeting")

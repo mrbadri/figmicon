@@ -1,33 +1,43 @@
 // src/config.ts
-import path from "node:path";
-import { pathToFileURL } from "node:url";
-import fs from "node:fs/promises";
-import { type FigmiconConfig } from "./types.js";
 
-export async function loadConfig(cwd = process.cwd()): Promise<FigmiconConfig> {
-  const candidates = [
-    "figmicon.config.ts",
-    "figmicon.config.mjs",
-    "figmicon.config.js",
-  ];
-  for (const name of candidates) {
-    const p = path.join(cwd, name);
-    try {
-      await fs.access(p);
-      const mod = await import(pathToFileURL(p).href);
-      const cfg: FigmiconConfig = mod.default || mod.config || mod;
-      // حداقل ولیدیشن
-      if (!cfg.figmaToken || !cfg.fileId || !cfg.nodeIds?.length) {
-        throw new Error(
-          "Invalid config: figmaToken, fileId, nodeIds required."
-        );
-      }
-      return cfg;
-    } catch {
-      // try next
-    }
+import { FigmiconConfigSchema, type FigmiconConfig } from "./types.js";
+
+export type LoadOptions = {
+  cwd?: string;
+  /** specific path for config, like "./figmicon.config.ts" */
+  configFile?: string;
+};
+
+export async function loadFigmaConfig(
+  opts: LoadOptions = {}
+): Promise<{ config: FigmiconConfig; source?: string }> {
+  const { loadConfig } = await import("c12");
+  const { cwd = process.cwd(), configFile } = opts;
+
+  const { config, layers } = await loadConfig<FigmiconConfig>({
+    name: "icon", // search: figmicon.config.*، .figmiconrc*، package.json
+    cwd,
+    configFile, // if you give specific path, it will load that directly
+    dotenv: true, // load .env
+  });
+
+  if (!config) {
+    throw new Error(
+      "No configuration found. Create a figmicon.config.(cjs|mjs|js|ts|mts|cts) " +
+        'or .figmiconrc.(json|yaml|yml|js|cjs|mjs) or add { "figmicon": { ... } } to package.json.'
+    );
   }
-  throw new Error("No figmicon.config.{ts,mjs,js} found.");
+
+  // validation + default values
+  const parsed = FigmiconConfigSchema.safeParse(config);
+  if (!parsed.success) {
+    throw new Error("Invalid figmicon config:\n" + parsed.error.toString());
+  }
+
+  // source of the config (for debugging)
+  const source = layers?.[layers.length - 1]?.source;
+  return { config: parsed.data, source };
 }
 
+// for better DX in TS/MJS files
 export const defineConfig = (c: FigmiconConfig) => c;
