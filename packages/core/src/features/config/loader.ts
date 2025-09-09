@@ -1,6 +1,5 @@
-// src/config.ts
-
-import { FigmiconConfigSchema, type FigmiconConfig } from "./types.js";
+import { FigmiconConfigSchema } from "./schema";
+import { ConfigReturn, ConfigOptions } from "./types";
 
 export type LoadOptions = {
   cwd?: string;
@@ -8,13 +7,13 @@ export type LoadOptions = {
   configFile?: string;
 };
 
-export async function loadFigmaConfig(
+export async function loadConfig(
   opts: LoadOptions = {}
-): Promise<{ config: FigmiconConfig; source?: string }> {
+): Promise<{ config: ConfigReturn; source?: string }> {
   const { loadConfig } = await import("c12");
   const { cwd = process.cwd(), configFile } = opts;
 
-  const { config, layers } = await loadConfig<FigmiconConfig>({
+  const { config, layers } = await loadConfig<ConfigOptions>({
     name: "icon", // search: figmicon.config.*، .figmiconrc*، package.json
     cwd,
     configFile, // if you give specific path, it will load that directly
@@ -35,9 +34,18 @@ export async function loadFigmaConfig(
   }
 
   // source of the config (for debugging)
-  const source = layers?.[layers.length - 1]?.source;
+  let source = layers?.[layers.length - 1]?.source;
+
+  // If source is not available, try to construct it from the first layer that has a configFile
+  if (!source) {
+    const firstLayer = layers?.[0];
+    if (firstLayer?.configFile && firstLayer?.cwd) {
+      source = `${firstLayer.cwd}/${firstLayer.configFile}.ts`;
+    }
+  }
+
   return { config: parsed.data, source };
 }
 
 // for better DX in TS/MJS files
-export const defineConfig = (c: FigmiconConfig) => c;
+export const iconConfig = (c: ConfigOptions) => c;

@@ -4,7 +4,7 @@ import { defineConfig } from "tsup";
 export default defineConfig([
   // 1) CLI (ESM) — فقط اجرا، بدون dts
   {
-    entry: { cli: "src/cli.ts" },
+    entry: { cli: "src/cli/index.ts" },
     outDir: "dist",
     format: ["cjs"],
     dts: false,

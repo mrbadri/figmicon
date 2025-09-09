@@ -1,13 +1,19 @@
-import { loadFigmaConfig } from "../../config";
-import { downloadNode } from "./download-node";
-import { fetchFigmaDocumentNode } from "./fetch-figma-document-node";
+import { NodeCache } from "@/features/cache";
+import { loadConfig } from "@/features/config";
+import { fetchFigmaDocumentNode } from "@/features/fetch/document";
+import { downloadNode } from "@/features/fetch";
 
 export const fetchCommand = async () => {
-  const { config } = await loadFigmaConfig();
-  const { figma, fetch } = config;
+  const { config, source } = await loadConfig();
+  const { figma, fetch, cache } = config;
+
+  // Initialize cache with config file path if caching is enabled
+  const nodeCache =
+    source && cache?.enabled !== false
+      ? new NodeCache(source, cache?.dir)
+      : null;
 
   const documentNode = await fetchFigmaDocumentNode({
-    apiToken: figma.token,
     fileId: figma.fileId,
     nodeId: figma.nodeId,
   });
@@ -16,8 +22,7 @@ export const fetchCommand = async () => {
     throw new Error("Document node not found");
   }
 
-  documentNode.children.forEach(async (child) => {
-    // if nodeTypes is provided, and it's not in the nodeTypes, skip
+  documentNode.children.slice(0, 4).forEach(async (child) => {
     if (
       fetch?.nodeTypes &&
       fetch?.nodeTypes?.length > 0 &&
@@ -29,21 +34,23 @@ export const fetchCommand = async () => {
       child.children.forEach(async (ComponentSetChild) => {
         await downloadNode({
           fileId: figma.fileId,
-          apiToken: figma.token,
           node: ComponentSetChild,
           generateFileName: fetch?.generateFileName,
           outDir: fetch?.outDir,
           parentNode: child,
+          configPath: source,
+          cache: nodeCache,
         });
       });
     } else {
       await downloadNode({
         fileId: figma.fileId,
-        apiToken: figma.token,
         node: child,
         generateFileName: fetch?.generateFileName,
         outDir: fetch?.outDir,
         parentNode: documentNode,
+        configPath: source,
+        cache: nodeCache,
       });
     }
   });

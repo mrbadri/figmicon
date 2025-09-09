@@ -1,33 +1,16 @@
+import {
+  type FigmaDocumentNode,
+  type FigmaParentNode,
+  getFigmaNodeByIds,
+  figmaLogger,
+} from "@/features/figma";
 import type { GetFileNodesResponse } from "@figma/rest-api-spec";
-import { green, cyan, bgBlue } from "kolorist";
+import { cyan, green } from "kolorist";
 
-/**
- * Options for fetching a Figma document node.
- * @interface FigmaNodeFetchOptions
- * @property {string} fileId - The ID of the Figma file to fetch from
- * @property {string} nodeId - The ID of the node to fetch (supports both "123-456" and "123:456" formats)
- * @property {string} apiToken - The Figma API access token for authentication
- */
 export interface FigmaNodeFetchOptions {
   fileId: string;
   nodeId: string;
-  apiToken: string;
 }
-
-/**
- * Represents a node in the Figma document tree.
- * This is a base type that includes all properties from the Figma API response.
- */
-export type FigmaDocumentNode =
-  GetFileNodesResponse["nodes"][string]["document"];
-
-/**
- * Represents a Figma node that contains child nodes.
- * This type ensures the node has a children array containing other document nodes.
- */
-export type FigmaParentNode = FigmaDocumentNode & {
-  children: FigmaDocumentNode[];
-};
 
 /**
  * Type guard that checks if a node has children.
@@ -48,7 +31,6 @@ export function isFigmaParentNode(
 export const fetchFigmaDocumentNode = async ({
   fileId,
   nodeId,
-  apiToken,
 }: FigmaNodeFetchOptions): Promise<FigmaParentNode | null> => {
   const formattedNodeId = nodeId.includes(":")
     ? nodeId
@@ -56,27 +38,23 @@ export const fetchFigmaDocumentNode = async ({
 
   // Log fetch initiation
   console.log(
-    bgBlue(" Figma "),
+    figmaLogger(),
     "Fetching node:",
     cyan(formattedNodeId),
     "from file:",
     green(fileId)
   );
 
-  const url = `https://api.figma.com/v1/files/${fileId}/nodes?ids=${formattedNodeId}`;
-
-  const response = await fetch(url, {
-    headers: { "X-Figma-Token": apiToken },
-  });
+  const response = await getFigmaNodeByIds({ fileId, ids: formattedNodeId });
 
   // Log API response status
   if (response.ok) {
-    console.log(bgBlue(" Figma "), green("✔"), "API request successful");
+    console.log(figmaLogger(), green("✔"), "API request successful");
   }
 
   if (!response.ok) {
     const errorMessage = `Failed to fetch Figma node (${response.status} ${response.statusText})`;
-    console.error(bgBlue(" Figma "), "❌", errorMessage);
+    console.error(figmaLogger(), "❌", errorMessage);
     throw new Error(errorMessage);
   }
 
@@ -84,7 +62,7 @@ export const fetchFigmaDocumentNode = async ({
   const nodeData = data.nodes?.[formattedNodeId];
 
   if (!nodeData?.document) {
-    console.warn(bgBlue(" Figma "), "⚠️", `Node not found: ${formattedNodeId}`);
+    console.warn(figmaLogger(), "⚠️", `Node not found: ${formattedNodeId}`);
     return null;
   }
 
@@ -92,7 +70,7 @@ export const fetchFigmaDocumentNode = async ({
 
   if (isFigmaParentNode(documentNode)) {
     console.log(
-      bgBlue(" Figma "),
+      figmaLogger(),
       green("✔"),
       "Node retrieved successfully with",
       cyan(documentNode.children.length.toString()),
@@ -101,7 +79,7 @@ export const fetchFigmaDocumentNode = async ({
     return documentNode;
   } else {
     const errorMessage = `Selected node must have children (node type: ${documentNode.type})`;
-    console.error(bgBlue(" Figma "), "❌", errorMessage);
+    console.error(figmaLogger(), "❌", errorMessage);
     throw new Error(errorMessage);
   }
 };

@@ -1,35 +1,51 @@
+import { type Node } from "@figma/rest-api-spec";
+import { cyan, green } from "kolorist";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { type Node } from "@figma/rest-api-spec";
-import { type GenerateFileName } from "../../types";
-import { bgBlue, cyan, green } from "kolorist";
+import { NodeCache } from "@/features/cache";
+import { cacheLogger } from "@/features/cache";
+import { type GenerateFileName } from "@/features/config/types";
+import { getFigmaImageByIds, figmaLogger } from "@/features/figma";
 
 export const downloadNode = async ({
   fileId,
-  apiToken,
   node,
   outDir = "icons",
   generateFileName = (node: Node, parentNode: Node) => node.name || node.id,
   sanitizeName = true,
   parentNode,
+  configPath,
+  cache,
 }: {
   fileId: string;
-  apiToken: string;
   node: Node;
   parentNode: Node;
   outDir?: string;
   generateFileName?: GenerateFileName;
   sanitizeName?: boolean;
+  configPath?: string;
+  cache?: NodeCache | null;
 }) => {
-  // 1) get temporary URL for SVG
-  const apiUrl = new URL(`https://api.figma.com/v1/images/${fileId}`);
-  apiUrl.searchParams.set("ids", node.id);
-  apiUrl.searchParams.set("format", "svg");
-  apiUrl.searchParams.set("svg_include_id", "true");
+  // Initialize cache if not provided and configPath is available
+  const nodeCache = cache || (configPath ? new NodeCache(configPath) : null);
 
-  const res = await fetch(apiUrl, {
-    headers: { "X-Figma-Token": apiToken },
-  });
+  // Check cache first if available
+  if (nodeCache) {
+    const isCached = await nodeCache.isCached(node, parentNode, fileId);
+    if (isCached) {
+      const cachedPath = nodeCache.getCachedFilePath(node.id, fileId);
+      if (cachedPath) {
+        console.log(
+          cacheLogger(),
+          green("✔"),
+          `Using cached ${cyan(node.name || node.id)} → ${green(cachedPath)}`
+        );
+        return cachedPath;
+      }
+    }
+  }
+  // 1) get temporary URL for SVG
+  const res = await getFigmaImageByIds({ fileId, ids: node.id });
 
   if (!res.ok) {
     throw new Error(
@@ -70,8 +86,13 @@ export const downloadNode = async ({
   // 5) write file
   await fs.writeFile(filePath, svg, "utf8");
 
+  // 6) update cache
+  if (nodeCache) {
+    await nodeCache.setCacheEntry(node, parentNode, fileId, filePath);
+  }
+
   console.log(
-    bgBlue(" Figma "),
+    figmaLogger(),
     green("✔"),
     `Downloaded ${cyan(node.name || node.id)} → ${green(filePath)}`
   );

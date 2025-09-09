@@ -1,6 +1,6 @@
 import { Command } from "commander";
-
-import { fetchCommand } from "./command/fetch/index.js";
+import { fetchCommand } from "@/cli/fetch";
+import { cacheStatsCommand, cacheClearCommand } from "@/cli/cache";
 
 const program = new Command();
 
@@ -18,6 +18,21 @@ program
   .option("-o, --out <dir>", "Output folder for raw SVGs", "tmp/icons")
   .action(async () => {
     await fetchCommand();
+  });
+
+// cache commands
+program
+  .command("cache:stats")
+  .description("Show cache statistics")
+  .action(async () => {
+    await cacheStatsCommand();
+  });
+
+program
+  .command("cache:clear")
+  .description("Clear all cached files")
+  .action(async () => {
+    await cacheClearCommand();
   });
 
 // hello command
