@@ -18,6 +18,9 @@ export default iconConfig({
     //   "https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30788-66894&t=AXIVkr6jFRczopB2-4"
     // ),
   },
+  fetch: {
+    concurrentDownloads: 5,
+  },
   // fetch: {
   //   // nodeTypes: ["COMPONENT", "COMPONENT_SET"],
   //   generateFileName: (node, parentNode) => node.name + "--" + parentNode.name,

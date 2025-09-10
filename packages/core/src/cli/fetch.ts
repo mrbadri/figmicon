@@ -1,7 +1,9 @@
 import { NodeCache } from "@/features/cache";
 import { loadConfig } from "@/features/config";
-import { fetchFigmaDocumentNode } from "@/features/fetch/document";
 import { downloadNode } from "@/features/fetch";
+import { fetchFigmaDocumentNode } from "@/features/fetch/document";
+import { figmaLogger } from "@/features/figma";
+import { lightYellow } from "kolorist";
 import pLimit from "p-limit";
 
 export const fetchCommand = async () => {
@@ -14,8 +16,19 @@ export const fetchCommand = async () => {
       ? new NodeCache(source, cache?.dir)
       : null;
 
-  // Create a limit function to allow only 3 concurrent downloads at a time
-  const limit = pLimit(5);
+  const limit = pLimit(fetch?.concurrentDownloads || 2);
+  if (fetch?.concurrentDownloads && fetch?.concurrentDownloads > 3) {
+    console.log(
+      figmaLogger(),
+      "⚠️ ",
+      "Concurrent downloads:",
+      fetch?.concurrentDownloads,
+      "set in config,",
+      lightYellow(
+        "but it's not recommended to set it to a value greater than 3"
+      )
+    );
+  }
 
   const documentNode = await fetchFigmaDocumentNode({
     fileId: figma.fileId,

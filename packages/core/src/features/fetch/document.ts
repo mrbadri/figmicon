@@ -39,6 +39,7 @@ export const fetchFigmaDocumentNode = async ({
   // Log fetch initiation
   console.log(
     figmaLogger(),
+    "⏳",
     "Fetching node:",
     cyan(formattedNodeId),
     "from file:",
