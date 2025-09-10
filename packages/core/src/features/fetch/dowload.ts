@@ -1,21 +1,31 @@
+import { cacheLogger, NodeCache } from "@/features/cache";
+import { type GenerateFileName } from "@/features/config/types";
+import { figmaLogger, getFigmaImageByIds } from "@/features/figma";
+import { arrowPad, firstPad } from "@/features/log";
 import { type Node } from "@figma/rest-api-spec";
-import { cyan, green } from "kolorist";
+import {
+  blue,
+  bold,
+  cyan,
+  gray,
+  green,
+  lightRed,
+  lightYellow,
+  red,
+} from "kolorist";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { NodeCache } from "@/features/cache";
-import { cacheLogger } from "@/features/cache";
-import { type GenerateFileName } from "@/features/config/types";
-import { getFigmaImageByIds, figmaLogger } from "@/features/figma";
 
 export const downloadNode = async ({
   fileId,
   node,
   outDir = "icons",
-  generateFileName = (node: Node, parentNode: Node) => node.name || node.id,
+  generateFileName = (node: Node) => node.name || node.id,
   sanitizeName = true,
   parentNode,
   configPath,
   cache,
+  retryCount = 0,
 }: {
   fileId: string;
   node: Node;
@@ -25,7 +35,8 @@ export const downloadNode = async ({
   sanitizeName?: boolean;
   configPath?: string;
   cache?: NodeCache | null;
-}) => {
+  retryCount?: number;
+}): Promise<string> => {
   // Initialize cache if not provided and configPath is available
   const nodeCache = cache || (configPath ? new NodeCache(configPath) : null);
 
@@ -34,20 +45,57 @@ export const downloadNode = async ({
     const isCached = await nodeCache.isCached(node, parentNode, fileId);
     if (isCached) {
       const cachedPath = nodeCache.getCachedFilePath(node.id, fileId);
+      const nodeName = node.name || node.id;
       if (cachedPath) {
         console.log(
           cacheLogger(),
           green("✔"),
-          `Using cached ${cyan(node.name || node.id)} → ${green(cachedPath)}`
+          firstPad("Using cached"),
+          `${cyan(nodeName)} ${arrowPad(nodeName, 40)} ${green(cachedPath)}`
         );
         return cachedPath;
       }
     }
   }
   // 1) get temporary URL for SVG
+  console.log(figmaLogger(), "⏳", `Downloading ${cyan(node.name || node.id)}`);
   const res = await getFigmaImageByIds({ fileId, ids: node.id });
 
   if (!res.ok) {
+    console.error(
+      figmaLogger(),
+      "❌",
+      `Failed to call Figma API: ${red(bold(res.status.toString()))} ${lightRed(res.statusText)}`
+    );
+    if (res.status === 429 && retryCount < 3) {
+      const randomDelay = Math.floor(Math.random() * 2000) + 1000;
+      console.log(
+        figmaLogger(),
+        "⏳",
+        // better log with retry count and delay
+        `Rate limit exceeded, ${gray("retrying...")} ${lightYellow(`${retryCount + 1}/3`)} , ${gray(`delaying for ${randomDelay}ms`)}`
+      );
+      await new Promise((resolve) => setTimeout(resolve, randomDelay));
+      return await downloadNode({
+        fileId,
+        node,
+        parentNode,
+        outDir,
+        generateFileName,
+        sanitizeName,
+        configPath,
+        cache,
+        retryCount: retryCount + 1,
+      });
+    }
+    console.error(
+      figmaLogger(),
+      "❌",
+      red(bold("Failed to call Figma API after 3 retries.")),
+      blue(
+        "please wait a moment and try again or check your internet connection."
+      )
+    );
     throw new Error(
       `Failed to call Figma API: ${res.status} ${res.statusText}`
     );
@@ -94,7 +142,8 @@ export const downloadNode = async ({
   console.log(
     figmaLogger(),
     green("✔"),
-    `Downloaded ${cyan(node.name || node.id)} → ${green(filePath)}`
+    firstPad("Downloaded"),
+    `${cyan(node.name || node.id)} ${arrowPad(node.name || node.id)} ${green(filePath)}`
   );
   return filePath;
 };

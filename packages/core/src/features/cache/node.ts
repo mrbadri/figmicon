@@ -1,9 +1,10 @@
+import { cacheLogger } from "@/features/cache";
+import { type Node } from "@figma/rest-api-spec";
+import { cyan, gray, green, yellow } from "kolorist";
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
-import crypto from "node:crypto";
-import { type Node } from "@figma/rest-api-spec";
-import { green, cyan, yellow } from "kolorist";
-import { cacheLogger } from "@/features/cache";
+import { firstPad } from "../log/pad";
 
 export interface CacheEntry {
   nodeHash: string;
@@ -68,11 +69,11 @@ export class NodeCache {
       const indexData = await fs.readFile(this.cacheIndexPath, "utf8");
       this.index = JSON.parse(indexData);
 
-      console.log(
-        cacheLogger(),
-        green("✔"),
-        `Loaded cache index with ${cyan(Object.keys(this.index).length.toString())} entries`
-      );
+      //   console.log(
+      //     cacheLogger(),
+      //     green("✔"),
+      //     `Loaded cache index with ${cyan(Object.keys(this.index).length.toString())} entries`
+      //   );
     } catch (error) {
       // Cache index doesn't exist or is invalid, start fresh
       this.index = {};
@@ -120,7 +121,8 @@ export class NodeCache {
       console.log(
         cacheLogger(),
         yellow("⚠"),
-        `Node ${cyan(node.name || node.id)} not found in cache`
+        firstPad("Node"),
+        `${cyan(node.name || node.id)} not found in cache`
       );
       return false;
     }
@@ -129,7 +131,8 @@ export class NodeCache {
       console.log(
         cacheLogger(),
         yellow("⚠"),
-        `Node ${cyan(node.name || node.id)} hash changed, cache invalid`
+        firstPad("Node"),
+        `${cyan(node.name || node.id)} hash changed, cache invalid`
       );
       return false;
     }
@@ -140,14 +143,16 @@ export class NodeCache {
       console.log(
         cacheLogger(),
         green("✔"),
-        `Node ${cyan(node.name || node.id)} found in cache and up-to-date`
+        firstPad("Node"),
+        `${cyan(node.name || node.id)} is cached and up-to-date`
       );
       return true;
     } catch {
       console.log(
         cacheLogger(),
         yellow("⚠"),
-        `Node ${cyan(node.name || node.id)} cached but file missing, will re-download`
+        firstPad("Node"),
+        `${cyan(node.name || node.id)} is cached, but the file is missing. ${gray("Initiating re-download...")}`
       );
       // Remove invalid cache entry
       delete this.index[this.generateCacheIndexKey(node.id, fileId)];
@@ -191,7 +196,8 @@ export class NodeCache {
     console.log(
       cacheLogger(),
       green("✔"),
-      `Cached ${cyan(node.name || node.id)} with hash ${yellow(nodeHash)}`
+      firstPad("Cached"),
+      `${cyan(node.name || node.id)} with hash ${yellow(nodeHash)}`
     );
   }
 

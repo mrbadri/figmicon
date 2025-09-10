@@ -23,5 +23,9 @@ export default iconConfig({
   //   generateFileName: (node, parentNode) => node.name + "--" + parentNode.name,
   //   // outDir: "icons/badri",
   //   sanitizeName: true,
+  //  limit: 5,
+  // logger:  () => console.log("🔥"),
   // },
+
+  //  create html to view all icons
 });
