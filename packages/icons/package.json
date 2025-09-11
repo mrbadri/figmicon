@@ -1,0 +1,39 @@
+{
+  "name": "@figmicon/icons",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
+    "generate": "pnpm generate:icons && pnpm generate:index",
+    "generate:icons": "npx @svgr/cli --icon --title-prop --replace-attr-values \"#3E7BFA=currentColor,white=currentColor,#000=currentColor,#000000=currentColor\" --typescript --out-dir src/components ../../apps/docs/icons",
+    "generate:index": "node scripts/generate-index.js",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -rf src/components"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
+    "@svgr/cli": "^8.1.0",
+    "@types/react": "^18.2.61",
+    "eslint": "^8.57.0",
+    "tsup": "^8.0.2",
+    "typescript": "5.5.4"
+  },
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
