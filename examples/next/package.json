@@ -8,10 +8,10 @@
     "dev": "next dev -p 3002",
     "lint": "next lint",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next",
-    "icon:fetch": "figmicon fetch",
-    "icon:cache:stats": "figmicon cache:stats",
-    "icon:cache:clear": "figmicon cache:clear",
-    "icon:generate": "figmicon generator"
+    "icon:fetch": "iconsync fetch",
+    "icon:cache:stats": "iconsync cache:stats",
+    "icon:cache:clear": "iconsync cache:clear",
+    "icon:generate": "iconsync generator"
   },
   "dependencies": {
     "@iconsync/core": "workspace:*",

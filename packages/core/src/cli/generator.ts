@@ -60,7 +60,7 @@ export const generatorCommand = async (options: GeneratorOptions = {}) => {
       );
       console.log(
         generatorLogger(),
-        "Run 'figmicon fetch' first to download SVG icons"
+        "Run 'iconsync fetch' first to download SVG icons"
       );
       return;
     }

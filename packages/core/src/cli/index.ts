@@ -6,7 +6,7 @@ import { generatorCommand } from "@/cli/generator";
 const program = new Command();
 
 program
-  .name("figmicon")
+  .name("iconsync")
   .description(
     "Fetch icons from Figma and build React components or sprite.svg"
   )

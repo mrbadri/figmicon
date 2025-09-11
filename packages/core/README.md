@@ -71,10 +71,10 @@ export default iconConfig({
 ```json
 {
   "scripts": {
-    "icon:fetch": "figmicon fetch",
-    "icon:cache:stats": "figmicon cache:stats",
-    "icon:cache:clear": "figmicon cache:clear",
-    "icon:generate": "figmicon generator"
+    "icon:fetch": "iconsync fetch",
+    "icon:cache:stats": "iconsync cache:stats",
+    "icon:cache:clear": "iconsync cache:clear",
+    "icon:generate": "iconsync generator"
   }
 }
 ```
@@ -141,10 +141,10 @@ The main configuration function that accepts the following options:
 
 ## CLI Commands
 
-- `figmicon fetch`: Fetch icons from Figma
-- `figmicon generator`: Generate React components from fetched icons
-- `figmicon cache:stats`: View cache statistics
-- `figmicon cache:clear`: Clear the cache
+- `iconsync fetch`: Fetch icons from Figma
+- `iconsync generator`: Generate React components from fetched icons
+- `iconsync cache:stats`: View cache statistics
+- `iconsync cache:clear`: Clear the cache
 
 ## License
 

@@ -1,6 +1,6 @@
-# Figmicon Documentation
+# IconSync Documentation
 
-This is the documentation site for Figmicon, built with [Nextra](https://nextra.site/) and [Next.js](https://nextjs.org/).
+This is the documentation site for IconSync, built with [Nextra](https://nextra.site/) and [Next.js](https://nextjs.org/).
 
 ## Development
 

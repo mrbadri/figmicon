@@ -9,7 +9,7 @@ const generateFileNameFnSchema = z.custom<GenerateFileName>();
 const nodeTypesSchema = z.custom<NodeType>();
 const generatorSchema = z.custom<generatorConfig>();
 
-export const FigmiconConfigSchema = z.object({
+export const IconSyncConfigSchema = z.object({
   figma: z
     .union([
       z.object({
@@ -57,7 +57,7 @@ export const FigmiconConfigSchema = z.object({
   cache: z
     .object({
       enabled: z.boolean().default(true),
-      dir: z.string().default(".figmicon-cache").optional(),
+      dir: z.string().default(".iconsync-cache").optional(),
     })
     .optional(),
 

@@ -13,7 +13,7 @@
     "clean": "rm -rf .turbo node_modules dist"
   },
   "bin": {
-    "figmicon": "dist/cli.js"
+    "iconsync": "dist/cli.js"
   },
   "exports": {
     ".": {

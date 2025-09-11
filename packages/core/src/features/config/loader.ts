@@ -1,9 +1,9 @@
-import { FigmiconConfigSchema } from "./schema";
+import { IconSyncConfigSchema } from "./schema";
 import { ConfigReturn, ConfigOptions } from "./types";
 
 export type LoadOptions = {
   cwd?: string;
-  /** specific path for config, like "./figmicon.config.ts" */
+  /** specific path for config, like "./iconsync.config.ts" */
   configFile?: string;
 };
 
@@ -14,7 +14,7 @@ export async function loadConfig(
   const { cwd = process.cwd(), configFile } = opts;
 
   const { config, layers } = await loadConfig<ConfigOptions>({
-    name: "icon", // search: figmicon.config.*، .figmiconrc*، package.json
+    name: "icon", // search: iconsync.config.*، .iconsyncrc*، package.json
     cwd,
     configFile, // if you give specific path, it will load that directly
     dotenv: true, // load .env
@@ -22,15 +22,15 @@ export async function loadConfig(
 
   if (!config) {
     throw new Error(
-      "No configuration found. Create a figmicon.config.(cjs|mjs|js|ts|mts|cts) " +
-        'or .figmiconrc.(json|yaml|yml|js|cjs|mjs) or add { "figmicon": { ... } } to package.json.'
+      "No configuration found. Create a iconsync.config.(cjs|mjs|js|ts|mts|cts) " +
+        'or .iconsyncrc.(json|yaml|yml|js|cjs|mjs) or add { "iconsync": { ... } } to package.json.'
     );
   }
 
   // validation + default values
-  const parsed = FigmiconConfigSchema.safeParse(config);
+  const parsed = IconSyncConfigSchema.safeParse(config);
   if (!parsed.success) {
-    throw new Error("Invalid figmicon config:\n" + parsed.error.toString());
+    throw new Error("Invalid iconsync config:\n" + parsed.error.toString());
   }
 
   // source of the config (for debugging)
