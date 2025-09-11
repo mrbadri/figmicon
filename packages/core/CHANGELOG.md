@@ -1,5 +1,11 @@
 # @iconsync/core
 
+## 0.0.2
+
+### Patch Changes
+
+- update documentation and configuration for IconSync; enhance package.json scripts and improve README with usage examples and configuration options
+
 ## 0.0.1
 
 ### Patch Changes
