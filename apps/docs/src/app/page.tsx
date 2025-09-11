@@ -10,6 +10,7 @@ import {
   Arrowcaretcircleup,
   Elementtaglabel,
 } from "@figmicon/icons";
+import SvgArrowArrowCircleUp from "../components/icons/ArrowArrowCircleUp";
 
 export default function Page() {
   return (
@@ -18,6 +19,7 @@ export default function Page() {
         <div>
           <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
             <Elementtaglabel className="text-blue-500" />
+            <SvgArrowArrowCircleUp className="w-6 h-6 text-blue-500" />
             Figmicon Icons Demo
           </h1>
           <p className="text-gray-600 mb-8">
@@ -30,7 +32,7 @@ export default function Page() {
           <div className="p-6 border rounded-lg">
             <h3 className="text-lg font-semibold mb-4">Navigation</h3>
             <div className="flex gap-4 items-center">
-              <Arrowarrowleftsm className="w-6 h-6 text-gray-700" />
+              <Arrowarrowleftsm className="w-6 h-6 text-gray-700" title="Arrow Left" style={{ color: "red" , width: "100px" , height: "100px" }} titleId="arrow-left" />
               <Arrowarrowrightsm className="w-6 h-6 text-gray-700" />
               <Arrowchevrondown className="w-6 h-6 text-gray-700" />
               <Arrowchevronup className="w-6 h-6 text-gray-700" />

@@ -15,11 +15,12 @@ import {
 } from "kolorist";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { DEFAULT_OUT_DIR_FETCH } from "./constant";
 
 export const downloadNode = async ({
   fileId,
   node,
-  outDir = "icons",
+  outDir = DEFAULT_OUT_DIR_FETCH,
   generateFileName = (node: Node) => node.name || node.id,
   sanitizeName = true,
   parentNode,

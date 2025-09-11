@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { fetchCommand } from "@/cli/fetch";
 import { cacheStatsCommand, cacheClearCommand } from "@/cli/cache";
+import { generatorCommand } from "@/cli/generator";
 
 const program = new Command();
 
@@ -33,6 +34,21 @@ program
   .description("Clear all cached files")
   .action(async () => {
     await cacheClearCommand();
+  });
+
+// generator command
+program
+  .command("generator")
+  .description("Generate React components from SVG files using SVGR")
+  .option("-i, --input <dir>", "Input directory containing SVG files")
+  .option("-o, --output <dir>", "Output directory for generated components")
+  .option("-c, --config <file>", "Path to SVGR config file")
+  .action(async (options) => {
+    await generatorCommand({
+      inputDir: options.input,
+      outputDir: options.output,
+      configFile: options.config,
+    });
   });
 
 // hello command

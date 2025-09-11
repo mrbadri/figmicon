@@ -31,4 +31,26 @@ export default iconConfig({
   // },
 
   //  create html to view all icons
+
+  generator: {
+    icon: true,
+    typescript: true,
+    titleProp: true,
+    dimensions: false,
+    expandProps: "end",
+    replaceAttrValues: {
+      "#3E7BFA": "currentColor",
+      white: "currentColor",
+      "#000": "currentColor",
+      "#000000": "currentColor",
+      "#fff": "currentColor",
+      "#ffffff": "currentColor",
+    },
+    outDir: "src/components/icons",
+    ext: "tsx",
+    prettier: true,
+    memo: false,
+    ref: false,
+    filenameCase: "camel", // Options: "pascal", "camel", "kebab", "snake"
+  },
 });

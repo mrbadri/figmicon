@@ -35,7 +35,11 @@
   },
   "dependencies": {
     "@figma/rest-api-spec": "^0.33.0",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "c12": "^3.2.0",
+    "change-case": "^5.4.4",
     "commander": "^14.0.0",
     "kolorist": "^1.8.0",
     "p-limit": "^7.1.1",
