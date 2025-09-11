@@ -1,69 +1,82 @@
-# Theming
+# Configuration Options
 
-Figmicon supports theming to help you customize the look and feel of your application.
+IconSync provides various configuration options to customize how icons are fetched from Figma and how components are generated.
 
-## Theme Configuration
+## Complete Configuration Reference
 
-You can customize the theme by providing a theme object:
+Here's a complete reference of all available configuration options:
 
-```jsx
-import { ThemeProvider, createTheme } from '@iconsync/core';
+```typescript
+import { iconConfig } from "@iconsync/core";
 
-const theme = createTheme({
-  colors: {
-    primary: '#0070f3',
-    secondary: '#ff4081',
-    success: '#00c853',
-    error: '#f44336',
+export default iconConfig({
+  // Figma API configuration
+  figma: {
+    token: process.env.FIGMA_TOKEN!, // Your Figma API token
+    url: "https://www.figma.com/design/YOUR_FILE_ID/YOUR_FILE_NAME?node-id=YOUR_NODE_ID",
+    // Alternatively, you can specify fileId and nodeId directly:
+    // fileId: "YOUR_FILE_ID",
+    // nodeId: "YOUR_NODE_ID",
   },
-  fonts: {
-    body: 'Inter, system-ui, sans-serif',
-    heading: 'Inter, system-ui, sans-serif',
+  
+  // Icon fetching configuration
+  fetch: {
+    concurrentDownloads: 5, // Number of concurrent downloads
+    // nodeTypes: ["COMPONENT", "COMPONENT_SET"], // Types of nodes to fetch
+    // generateFileName: (node, parentNode) => node.name + "--" + parentNode.name, // Custom filename generator
+    // sanitizeName: true, // Sanitize filenames
+    // limit: 10, // Limit the number of icons to fetch
   },
-  fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem',
+  
+  // Component generation configuration
+  generator: {
+    icon: true, // Generate icon components
+    typescript: true, // Generate TypeScript files
+    titleProp: true, // Add title prop to components
+    dimensions: false, // Include width/height dimensions
+    expandProps: "end", // Position of expanded props
+    replaceAttrValues: {
+      "#000000": "currentColor", // Replace specific colors
+      "#fff": "currentColor",
+    },
+    outDir: "src/components/icons", // Output directory
+    ext: "tsx", // File extension
+    prettier: true, // Format with Prettier
+    memo: false, // Use React.memo
+    ref: false, // Forward refs
+    filenameCase: "camel", // Filename case style: "pascal", "camel", "kebab", "snake"
   },
 });
+```
 
-export default function App({ Component, pageProps }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
-  );
+## Color Replacement
+
+The `replaceAttrValues` option in the generator configuration allows you to replace specific colors in your SVG icons with dynamic values like `currentColor`. This is useful for creating icons that inherit their color from CSS:
+
+```typescript
+generator: {
+  // ... other options
+  replaceAttrValues: {
+    "#000000": "currentColor",
+    "#fff": "currentColor",
+    "#3E7BFA": "currentColor",
+  },
 }
 ```
 
-## Dark Mode
+## Filename Customization
 
-Figmicon supports dark mode out of the box:
+You can customize how filenames are generated using the `filenameCase` option:
 
-```jsx
-import { ThemeProvider, createTheme } from '@iconsync/core';
-
-const lightTheme = createTheme({
-  // Light theme configuration
-});
-
-const darkTheme = createTheme({
-  // Dark theme configuration
-});
-
-export default function App({ Component, pageProps }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const theme = isDarkMode ? darkTheme : lightTheme;
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
-  );
+```typescript
+generator: {
+  // ... other options
+  filenameCase: "camel", // Options: "pascal", "camel", "kebab", "snake"
 }
 ```
+
+For example:
+- `camel`: myIconName
+- `pascal`: MyIconName
+- `kebab`: my-icon-name
+- `snake`: my_icon_name

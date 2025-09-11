@@ -1,40 +1,81 @@
 # Icons
 
-Figmicon includes an icon system that allows you to easily use icons from Figma in your application.
+IconSync allows you to easily fetch icons from Figma and use them in your application as React components.
 
-## Usage
+## Configuration
+
+Create an `icon.config.ts` file in your project root:
+
+```typescript
+import { iconConfig } from "@iconsync/core";
+
+export default iconConfig({
+  figma: {
+    token: process.env.FIGMA_TOKEN!, // Your Figma API token
+    url: "https://www.figma.com/design/YOUR_FILE_ID/YOUR_FILE_NAME?node-id=YOUR_NODE_ID",
+  },
+  fetch: {
+    concurrentDownloads: 5, // Number of concurrent downloads
+  },
+  generator: {
+    icon: true, // Generate icon components
+    typescript: true, // Generate TypeScript files
+    titleProp: true, // Add title prop to components
+    dimensions: false, // Include width/height dimensions
+    expandProps: "end", // Position of expanded props
+    replaceAttrValues: {
+      "#000000": "currentColor", // Replace specific colors
+      "#fff": "currentColor",
+    },
+    outDir: "src/components/icons", // Output directory
+    ext: "tsx", // File extension
+    prettier: true, // Format with Prettier
+    filenameCase: "camel", // Filename case style
+  },
+});
+```
+
+## Fetching Icons
+
+After setting up your configuration file, you can fetch icons from Figma:
+
+```bash
+# Using the CLI directly
+npx figmicon fetch
+
+# Or using a package.json script
+npm run icon:fetch
+```
+
+## Generating Components
+
+After fetching icons, you can generate React components:
+
+```bash
+# Using the CLI directly
+npx figmicon generator
+
+# Or using a package.json script
+npm run icon:generate
+```
+
+## Using Generated Icons
+
+Once your icon components are generated, you can import and use them in your React application:
 
 ```jsx
-import { Icon } from '@iconsync/core';
+import { ArrowRight } from './components/icons';
 
 export default function IconExample() {
   return (
-    <Icon name="arrow-right" size="md" />
+    <ArrowRight 
+      width={24} 
+      height={24} 
+      color="currentColor" 
+      title="Arrow Right Icon" 
+    />
   );
 }
 ```
 
-## Available Icons
-
-Figmicon includes a wide range of icons that you can use in your application. Here are some examples:
-
-- `arrow-right`
-- `arrow-left`
-- `check`
-- `close`
-- `menu`
-- `settings`
-- `user`
-
-## Customizing Icons
-
-You can customize the appearance of icons by passing props:
-
-```jsx
-<Icon 
-  name="arrow-right" 
-  size="lg" 
-  color="primary" 
-  strokeWidth={2} 
-/>
-```
+The exact props available will depend on your generator configuration.

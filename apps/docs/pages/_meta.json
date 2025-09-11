@@ -1,7 +1,7 @@
 {
   "index": "Introduction",
   "getting-started": "Getting Started",
-  "components": "Components",
   "icons": "Icons",
-  "theming": "Theming"
+  "components": "Icon Components",
+  "theming": "Configuration Options"
 }

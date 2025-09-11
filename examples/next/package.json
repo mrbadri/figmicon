@@ -1,6 +1,6 @@
 {
   "name": "examples",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -8,7 +8,7 @@
     "dev": "next dev -p 3002",
     "lint": "next lint",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next",
-    "icon:fetch": "figmicon fetch --out tmp/icons",
+    "icon:fetch": "figmicon fetch",
     "icon:cache:stats": "figmicon cache:stats",
     "icon:cache:clear": "figmicon cache:clear",
     "icon:generate": "figmicon generator"

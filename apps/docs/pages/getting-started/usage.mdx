@@ -1,34 +1,68 @@
 # Usage
 
-Once you have installed Figmicon, you can start using its components in your application.
+Once you have installed IconSync and set up your configuration, you can start using it to fetch icons from Figma and generate React components.
 
-## Basic Example
+## Fetching Icons
 
-```jsx
-import { Button, Card, Text } from '@iconsync/core';
+Fetch icons from your Figma file:
 
-export default function Example() {
-  return (
-    <Card>
-      <Text variant="heading">Hello World</Text>
-      <Text>This is a simple example using Figmicon components.</Text>
-      <Button variant="primary">Learn More</Button>
-    </Card>
-  );
-}
+```bash
+# Using npm script
+npm run icon:fetch
+
+# Or directly with the CLI
+npx figmicon fetch
 ```
 
-## Using Icons
+This will download SVG icons from your configured Figma file and store them in a local cache.
+
+## Generating Components
+
+Generate React components from the fetched icons:
+
+```bash
+# Using npm script
+npm run icon:generate
+
+# Or directly with the CLI
+npx figmicon generator
+```
+
+This will create React components in the output directory specified in your configuration.
+
+## Using Generated Icons
+
+Import and use the generated icon components in your React application:
 
 ```jsx
-import { Icon } from '@iconsync/core';
+// Import the generated icon component
+import { ArrowRight } from '../components/icons';
 
 export default function IconExample() {
   return (
     <div>
-      <Icon name="arrow-right" size="md" />
-      <Icon name="check" size="sm" color="success" />
+      {/* Use the icon component */}
+      <ArrowRight 
+        width={24} 
+        height={24} 
+        color="blue" 
+        title="Go to next page" 
+      />
     </div>
   );
 }
 ```
+
+## Managing the Cache
+
+You can view cache statistics or clear the cache using these commands:
+
+```bash
+# View cache statistics
+npm run icon:cache:stats
+
+# Clear the cache
+npm run icon:cache:clear
+```
+
+Clearing the cache can be useful when you want to ensure you're fetching the latest icons from Figma.

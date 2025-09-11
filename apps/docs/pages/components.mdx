@@ -1,13 +1,57 @@
-# Components
+# Icon Components
 
-Figmicon provides a set of reusable UI components that you can use to build your applications.
+IconSync generates React components from your Figma icons. This page explains how to use these generated components.
 
-## Available Components
+## Generated Components
 
-- [Button](/components/button)
-- [Card](/components/card)
-- [Text](/components/text)
-- [Input](/components/input)
-- [Icon](/components/icon)
+When you run the generator command, IconSync creates React components for each icon in your Figma file. These components are generated in the output directory specified in your configuration.
 
-Each component is designed to be flexible and customizable to fit your needs.
+## Component Props
+
+The generated components accept the following props:
+
+- `width`: Width of the icon
+- `height`: Height of the icon
+- `color`: Color of the icon (if you've set up color replacement)
+- `title`: Accessibility title for the icon (if enabled in config)
+- `...props`: Any other SVG props you want to pass
+
+## Example Usage
+
+```jsx
+import { ArrowRight } from '../components/icons';
+
+export default function IconExample() {
+  return (
+    <ArrowRight 
+      width={24} 
+      height={24} 
+      color="currentColor" 
+      title="Arrow Right Icon" 
+    />
+  );
+}
+```
+
+## Customizing Component Generation
+
+You can customize how components are generated using the `generator` options in your configuration file:
+
+```typescript
+generator: {
+  icon: true, // Generate icon components
+  typescript: true, // Generate TypeScript files
+  titleProp: true, // Add title prop to components
+  dimensions: false, // Include width/height dimensions
+  expandProps: "end", // Position of expanded props
+  replaceAttrValues: {
+    "#000000": "currentColor", // Replace specific colors
+  },
+  outDir: "src/components/icons", // Output directory
+  ext: "tsx", // File extension
+  prettier: true, // Format with Prettier
+  memo: false, // Use React.memo
+  ref: false, // Forward refs
+  filenameCase: "camel", // Filename case style
+}
+```

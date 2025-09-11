@@ -10,19 +10,55 @@ npm install @iconsync/core
 yarn add @iconsync/core
 
 # pnpm
-pnpm install @iconsync/core
+pnpm add @iconsync/core
 ```
 
-## Basic Usage
+## Setting up your configuration
 
-```jsx
-import { Button } from '@iconsync/core';
+Create an `icon.config.ts` file in your project root:
 
-export default function App() {
-  return (
-    <Button variant="primary">
-      Click me
-    </Button>
-  );
+```typescript
+import { iconConfig } from "@iconsync/core";
+
+export default iconConfig({
+  figma: {
+    token: process.env.FIGMA_TOKEN!, // Your Figma API token
+    url: "https://www.figma.com/design/YOUR_FILE_ID/YOUR_FILE_NAME?node-id=YOUR_NODE_ID",
+  },
+  fetch: {
+    concurrentDownloads: 5,
+  },
+  generator: {
+    icon: true,
+    typescript: true,
+    outDir: "src/components/icons",
+    ext: "tsx",
+    prettier: true,
+  },
+});
+```
+
+## Adding scripts to package.json
+
+Add these scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "icon:fetch": "figmicon fetch",
+    "icon:cache:stats": "figmicon cache:stats",
+    "icon:cache:clear": "figmicon cache:clear",
+    "icon:generate": "figmicon generator"
+  }
 }
 ```
+
+## Setting up your Figma token
+
+Create a `.env` file and add your Figma token:
+
+```
+FIGMA_TOKEN=your_figma_api_token
+```
+
+You can obtain a Figma API token from your Figma account settings under the "Personal access tokens" section.
