@@ -16,11 +16,12 @@ This Turborepo includes the following:
 
 ### Apps and Packages
 
-- `@acme/docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
-- `@acme/core`: core React components
-- `@acme/utils`: shared React utilities
-- `@acme/tsconfig`: shared `tsconfig.json`s used throughout the monorepo
-- `@acme/eslint-config`: ESLint preset
+- `@iconsync/docs`: Documentation site powered by [Nextra](https://nextra.site/) and [Next.js](https://nextjs.org/)
+- `@iconsync/docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
+- `@iconsync/core`: core React components
+- `@iconsync/utils`: shared React utilities
+- `@iconsync/tsconfig`: shared `tsconfig.json`s used throughout the monorepo
+- `@iconsync/eslint-config`: ESLint preset
 
 Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -42,7 +43,7 @@ This Turborepo has some additional tools already setup for you:
 
 ### Changing the npm organization scope
 
-The npm organization scope for this design system starter is `@acme`. To change this, it's a bit manual at the moment, but you'll need to do the following:
+The npm organization scope for this design system starter is `@iconsync`. To change this, it's a bit manual at the moment, but you'll need to do the following:
 
 - Rename folders in `packages/*` to replace `acme` with your desired scope
 - Search and replace `acme` with your desired scope

@@ -1,5 +1,5 @@
 {
-  "extends": "@acme/tsconfig/react-library.json",
+  "extends": "@iconsync/tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

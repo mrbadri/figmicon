@@ -1,0 +1,40 @@
+# Icons
+
+Figmicon includes an icon system that allows you to easily use icons from Figma in your application.
+
+## Usage
+
+```jsx
+import { Icon } from '@iconsync/core';
+
+export default function IconExample() {
+  return (
+    <Icon name="arrow-right" size="md" />
+  );
+}
+```
+
+## Available Icons
+
+Figmicon includes a wide range of icons that you can use in your application. Here are some examples:
+
+- `arrow-right`
+- `arrow-left`
+- `check`
+- `close`
+- `menu`
+- `settings`
+- `user`
+
+## Customizing Icons
+
+You can customize the appearance of icons by passing props:
+
+```jsx
+<Icon 
+  name="arrow-right" 
+  size="lg" 
+  color="primary" 
+  strokeWidth={2} 
+/>
+```

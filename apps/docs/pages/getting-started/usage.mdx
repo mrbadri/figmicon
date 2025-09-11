@@ -1,0 +1,34 @@
+# Usage
+
+Once you have installed Figmicon, you can start using its components in your application.
+
+## Basic Example
+
+```jsx
+import { Button, Card, Text } from '@iconsync/core';
+
+export default function Example() {
+  return (
+    <Card>
+      <Text variant="heading">Hello World</Text>
+      <Text>This is a simple example using Figmicon components.</Text>
+      <Button variant="primary">Learn More</Button>
+    </Card>
+  );
+}
+```
+
+## Using Icons
+
+```jsx
+import { Icon } from '@iconsync/core';
+
+export default function IconExample() {
+  return (
+    <div>
+      <Icon name="arrow-right" size="md" />
+      <Icon name="check" size="sm" color="success" />
+    </div>
+  );
+}
+```
