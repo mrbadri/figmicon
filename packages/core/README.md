@@ -2,6 +2,12 @@
 
 A powerful tool for synchronizing Figma icons with your codebase. Fetch icons from Figma and generate React components automatically.
 
+[![Documentation](https://img.shields.io/badge/docs-visit-blue.svg)](https://iconsync-docs.vercel.app/)
+
+## Documentation
+
+For full documentation, visit [https://iconsync-docs.vercel.app/](https://iconsync-docs.vercel.app/)
+
 ## Installation
 
 ```bash

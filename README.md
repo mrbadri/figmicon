@@ -1,74 +1,151 @@
-# Turborepo Design System starter with Changesets
+# @iconsync/core
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A powerful tool for synchronizing Figma icons with your codebase. Fetch icons from Figma and generate React components automatically.
 
-## Using this example
+[![Documentation](https://img.shields.io/badge/docs-visit-blue.svg)](https://iconsync-docs.vercel.app/)
 
-Run the following command:
+## Documentation
 
-```sh
-npx create-turbo@latest -e with-changesets
+For full documentation, visit [https://iconsync-docs.vercel.app/](https://iconsync-docs.vercel.app/)
+
+## Installation
+
+```bash
+# npm
+npm install @iconsync/core
+
+# yarn
+yarn add @iconsync/core
+
+# pnpm
+pnpm add @iconsync/core
 ```
 
-## What's inside?
+## Usage
 
-This Turborepo includes the following:
+### 1. Create a configuration file
 
-### Apps and Packages
+Create an `icon.config.ts` file in your project root:
 
-- `@iconsync/docs`: Documentation site powered by [Nextra](https://nextra.site/) and [Next.js](https://nextjs.org/)
-- `@iconsync/docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
-- `@iconsync/core`: core React components
-- `@iconsync/utils`: shared React utilities
-- `@iconsync/tsconfig`: shared `tsconfig.json`s used throughout the monorepo
-- `@iconsync/eslint-config`: ESLint preset
+```typescript
+import { iconConfig } from "@iconsync/core";
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Useful commands
-
-- `yarn build` - Build all packages and the docs site
-- `yarn dev` - Develop all packages and the docs site
-- `yarn lint` - Lint all packages
-- `yarn changeset` - Generate a changeset
-- `yarn clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
-
-### Changing the npm organization scope
-
-The npm organization scope for this design system starter is `@iconsync`. To change this, it's a bit manual at the moment, but you'll need to do the following:
-
-- Rename folders in `packages/*` to replace `acme` with your desired scope
-- Search and replace `acme` with your desired scope
-- Re-run `yarn install`
-
-## Versioning and Publishing packages
-
-Package publishing has been configured using [Changesets](https://github.com/changesets/changesets). Please review their [documentation](https://github.com/changesets/changesets#documentation) to familiarize yourself with the workflow.
-
-This example comes with automated npm releases setup in a [GitHub Action](https://github.com/changesets/action). To get this working, you will need to create an `NPM_TOKEN` and `GITHUB_TOKEN` in your repository settings. You should also install the [Changesets bot](https://github.com/apps/changeset-bot) on your GitHub repository as well.
-
-For more information about this automation, refer to the official [changesets documentation](https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md)
-
-### npm
-
-If you want to publish package to the public npm registry and make them publicly available, this is already setup.
-
-To publish packages to a private npm organization scope, **remove** the following from each of the `package.json`'s
-
-```diff
-- "publishConfig": {
--  "access": "public"
-- },
+export default iconConfig({
+  figma: {
+    token: process.env.FIGMA_TOKEN!, // Your Figma API token
+    url: "https://www.figma.com/design/YOUR_FILE_ID/YOUR_FILE_NAME?node-id=YOUR_NODE_ID",
+    // Alternatively, you can specify fileId and nodeId directly:
+    // fileId: "YOUR_FILE_ID",
+    // nodeId: "YOUR_NODE_ID",
+  },
+  fetch: {
+    concurrentDownloads: 5, // Number of concurrent downloads
+    // Optional configurations:
+    // nodeTypes: ["COMPONENT", "COMPONENT_SET"], // Types of nodes to fetch
+    // generateFileName: (node, parentNode) => node.name + "--" + parentNode.name, // Custom filename generator
+    // sanitizeName: true, // Sanitize filenames
+    // limit: 10, // Limit the number of icons to fetch
+  },
+  generator: {
+    icon: true, // Generate icon components
+    typescript: true, // Generate TypeScript files
+    titleProp: true, // Add title prop to components
+    dimensions: false, // Include width/height dimensions
+    expandProps: "end", // Position of expanded props
+    replaceAttrValues: {
+      "#000000": "currentColor", // Replace specific colors
+      "#fff": "currentColor",
+    },
+    outDir: "src/components/icons", // Output directory
+    ext: "tsx", // File extension
+    prettier: true, // Format with Prettier
+    memo: false, // Use React.memo
+    ref: false, // Forward refs
+    filenameCase: "camel", // Filename case style: "pascal", "camel", "kebab", "snake"
+  },
+});
 ```
 
-### GitHub Package Registry
+### 2. Add scripts to your package.json
 
-See [Working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#publishing-a-package-using-publishconfig-in-the-packagejson-file)
+```json
+{
+  "scripts": {
+    "icon:fetch": "figmicon fetch",
+    "icon:cache:stats": "figmicon cache:stats",
+    "icon:cache:clear": "figmicon cache:clear",
+    "icon:generate": "figmicon generator"
+  }
+}
+```
+
+### 3. Set up your Figma token
+
+Create a `.env` file and add your Figma token:
+
+```
+FIGMA_TOKEN=your_figma_api_token
+```
+
+### 4. Run the commands
+
+```bash
+# Fetch icons from Figma
+npm run icon:fetch
+
+# Generate React components
+npm run icon:generate
+
+# View cache statistics
+npm run icon:cache:stats
+
+# Clear the cache
+npm run icon:cache:clear
+```
+
+## API Reference
+
+### iconConfig(options)
+
+The main configuration function that accepts the following options:
+
+#### figma
+
+- `token`: Your Figma API token
+- `url`: Figma file URL with node ID
+- `fileId`: Figma file ID (alternative to URL)
+- `nodeId`: Figma node ID (alternative to URL)
+
+#### fetch
+
+- `concurrentDownloads`: Number of concurrent downloads
+- `nodeTypes`: Types of nodes to fetch (default: `["COMPONENT", "COMPONENT_SET"]`)
+- `generateFileName`: Custom filename generator function
+- `sanitizeName`: Whether to sanitize filenames (default: `true`)
+- `limit`: Limit the number of icons to fetch
+
+#### generator
+
+- `icon`: Generate icon components (default: `true`)
+- `typescript`: Generate TypeScript files (default: `true`)
+- `titleProp`: Add title prop to components (default: `true`)
+- `dimensions`: Include width/height dimensions (default: `false`)
+- `expandProps`: Position of expanded props (default: `"end"`)
+- `replaceAttrValues`: Object mapping colors to replace
+- `outDir`: Output directory for generated components
+- `ext`: File extension for generated components (default: `"tsx"`)
+- `prettier`: Format with Prettier (default: `true`)
+- `memo`: Use React.memo (default: `false`)
+- `ref`: Forward refs (default: `false`)
+- `filenameCase`: Filename case style (default: `"camel"`)
+
+## CLI Commands
+
+- `figmicon fetch`: Fetch icons from Figma
+- `figmicon generator`: Generate React components from fetched icons
+- `figmicon cache:stats`: View cache statistics
+- `figmicon cache:clear`: Clear the cache
+
+## License
+
+MIT
