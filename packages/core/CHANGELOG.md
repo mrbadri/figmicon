@@ -1,5 +1,11 @@
 # @iconsync/core
 
+## 0.0.3
+
+### Patch Changes
+
+- Improved grammar in CLI messages
+
 ## 0.0.2
 
 ### Patch Changes

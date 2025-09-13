@@ -1,6 +1,6 @@
 {
   "name": "@iconsync/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "IconSync – Sync Figma icons and generate optimized React components.",
   "sideEffects": false,
   "license": "MIT",
