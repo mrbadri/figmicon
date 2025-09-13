@@ -1,56 +1,40 @@
 /// <reference types="node" />
-import { iconConfig } from "@iconsync/core";
-
-// https://www.figma.com/design/iH0P8rAVJjqln9jiuNqY7R/VergeCloud?node-id=10806-24901&m=dev
-
-// TODO: check this URL
-// https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30789-32015&m=dev
-// https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30788-66894&t=AXIVkr6jFRczopB2-4
+import { iconConfig } from '@iconsync/core';
 
 export default iconConfig({
   figma: {
     token: process.env.FIGMA_TOKEN!,
-    url: "https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30788-66894&t=AXIVkr6jFRczopB2-4",
+    url: 'https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30788-66894&t=AXIVkr6jFRczopB2-4',
+    // alternatively you can use fileId and nodeId
     // fileId: "iH0P8rAVJjqln9jiuNqY7R",
     // nodeId: "10806-24901",
-    // INFO: you can use parseFigmaUrl to parse the url alternative to fileId and nodeId
-    // ...parseFigmaUrl(
-    //   "https://www.figma.com/design/B6R9BOyrbu0h3dVMhh1kkT/coolicons-%7C-Free-Iconset--Community-?node-id=30788-66894&t=AXIVkr6jFRczopB2-4"
-    // ),
   },
   fetch: {
-    concurrentDownloads: 5,
+    includeTypes: ['COMPONENT', 'COMPONENT_SET'],
+    concurrency: 3,
+    filenameCase: 'kebab',
+    outDir: 'assets/icons',
   },
-  // fetch: {
-  //   // nodeTypes: ["COMPONENT", "COMPONENT_SET"],
-  //   generateFileName: (node, parentNode) => node.name + "--" + parentNode.name,
-  //   // outDir: "icons/badri",
-  //   sanitizeName: true,
-  //  limit: 5,
-  // logger:  () => console.log("🔥"),
-  // },
-
-  //  create html to view all icons
 
   generator: {
     icon: true,
     typescript: true,
     titleProp: true,
     dimensions: false,
-    expandProps: "end",
+    expandProps: 'end',
     replaceAttrValues: {
-      "#3E7BFA": "currentColor",
-      white: "currentColor",
-      "#000": "currentColor",
-      "#000000": "currentColor",
-      "#fff": "currentColor",
-      "#ffffff": "currentColor",
+      '#3E7BFA': 'currentColor',
+      white: 'currentColor',
+      '#000': 'currentColor',
+      '#000000': 'currentColor',
+      '#fff': 'currentColor',
+      '#ffffff': 'currentColor',
     },
-    outDir: "src/components/icons",
-    ext: "tsx",
+    outDir: 'src/components/icons',
+    ext: 'tsx',
     prettier: true,
     memo: false,
     ref: false,
-    filenameCase: "camel", // Options: "pascal", "camel", "kebab", "snake"
+    filenameCase: 'kebab',
   },
 });

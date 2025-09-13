@@ -11,7 +11,8 @@
     "icon:fetch": "iconsync fetch",
     "icon:cache:stats": "iconsync cache:stats",
     "icon:cache:clear": "iconsync cache:clear",
-    "icon:generate": "iconsync generator"
+    "icon:generate": "iconsync generator",
+    "icon:init": "iconsync init"
   },
   "dependencies": {
     "@iconsync/core": "workspace:*",

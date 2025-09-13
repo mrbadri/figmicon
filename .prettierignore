@@ -1,0 +1,14 @@
+# Ignore Handlebars template files
+*.hbs
+
+# Build output directories
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Cache directories
+.cache/
+.next/
+

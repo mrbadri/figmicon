@@ -1,8 +1,14 @@
 {
   "extends": "@iconsync/tsconfig/nextjs.json",
   "compilerOptions": {
-    "jsx": "react"
+    "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

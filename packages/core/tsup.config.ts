@@ -1,28 +1,39 @@
 // tsup.config.ts
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
+
+const common = {
+  outDir: 'dist',
+  target: 'node18',
+  sourcemap: true,
+  clean: false,
+  splitting: false,
+  // Make esbuild treat .hbs imports as text (string)
+  esbuildOptions(options: { loader?: Record<string, string> }) {
+    options.loader = {
+      ...(options.loader ?? {}),
+      '.hbs': 'text',
+    };
+  },
+  // Make sure @/* works for both builds
+  alias: {
+    '@': './src',
+  },
+} as const;
 
 export default defineConfig([
-  // 1) CLI (ESM) — فقط اجرا، بدون dts
   {
-    entry: { cli: "src/cli/index.ts" },
-    outDir: "dist",
-    format: ["cjs"],
+    ...common,
+    entry: { cli: 'src/cli/index.ts' },
+    format: ['cjs'],
     dts: false,
-    splitting: false,
-    sourcemap: true,
-    clean: false,
-    banner: { js: "#!/usr/bin/env node" },
-    target: "node18",
+    banner: { js: '#!/usr/bin/env node' },
+    platform: 'node',
   },
-  // 2) Library (ESM) — برای import و تولید types
   {
-    entry: { index: "src/index.ts" },
-    outDir: "dist",
-    format: ["esm", "cjs"],
-    splitting: false,
-    sourcemap: true,
-    clean: false,
-    target: "node18",
+    ...common,
+    entry: { index: 'src/index.ts' },
+    format: ['esm', 'cjs'],
     dts: true,
+    platform: 'node',
   },
 ]);

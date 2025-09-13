@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { fetchCommand } from "@/cli/fetch";
 import { cacheStatsCommand, cacheClearCommand } from "@/cli/cache";
 import { generatorCommand } from "@/cli/generator";
+import { initCommand } from "@/cli/init";
 
 const program = new Command();
 
@@ -10,7 +11,7 @@ program
   .description(
     "Fetch icons from Figma and build React components or sprite.svg"
   )
-  .version("1.0.1");
+  .version("1.0.0");
 
 // fetch command
 program
@@ -51,13 +52,12 @@ program
     });
   });
 
-// hello command
+// init command
 program
-  .command("hello")
-  .description("Prints a greeting")
-  .option("-n, --name <name>", "Name to greet", "world")
-  .action(({ name }) => {
-    console.log(`Hello, ${name}!`);
+  .command("init")
+  .description("Initialize a new icon configuration file")
+  .action(async () => {
+    await initCommand();
   });
 
 program.parseAsync();

@@ -1,0 +1,65 @@
+/// <reference types="node" />
+import { iconConfig } from '@iconsync/core';
+
+export default iconConfig({
+  figma: {
+    /**
+     * Required — your Figma API token.
+     * No default value. Usually set via env var: FIGMA_TOKEN.
+     * @guide https://www.figma.com/developers/api#authentication
+     */
+    token: process.env.FIGMA_TOKEN!,
+
+    /**
+     * You can configure this in two ways:
+     *
+     * 1. **Preferred:** Provide a full Figma URL.
+     *    Example: https://www.figma.com/file/<fileId>/MyIcons?node-id=<nodeId>
+     *
+     * 2. **Alternative:** Comment out `url` and use `fileId` + `nodeId` instead.
+     *
+     * @guide https://www.figma.com/developers/api#get-file-nodes
+     */
+    url: '{{url}}',
+
+    // Alternatively, you can use fileId and nodeId instead of url:
+    // fileId: "{{fileId}}", // The unique ID of your Figma file
+    // nodeId: "{{nodeId}}", // Identifies the Frame/Component/Page within the file
+  },
+
+  {{#if fetch}}
+  fetch: {
+    {{#if fetch.includeTypes}}
+    includeTypes: [{{#each fetch.includeTypes}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}],
+    {{/if}}
+    {{#if fetch.concurrency}}concurrency: {{fetch.concurrency}},{{/if}}
+    {{#if fetch.filenameCase}}filenameCase: '{{fetch.filenameCase}}',{{/if}}
+    {{#if fetch.outDir}}outDir: '{{fetch.outDir}}',{{/if}}
+  },
+  {{/if}}
+
+  {{#if generator}}
+  generator: {
+    {{#if generator.icon}}icon: {{generator.icon}},{{/if}}
+    {{#if generator.typescript}}typescript: {{generator.typescript}},{{/if}}
+    {{#if generator.titleProp}}titleProp: {{generator.titleProp}},{{/if}}
+    {{#if generator.dimensions}}dimensions: {{generator.dimensions}},{{/if}}
+    {{#if generator.expandProps}}expandProps: '{{generator.expandProps}}',{{/if}}
+
+    {{#if generator.replaceAttrValues}}
+    replaceAttrValues: {
+      {{#each generator.replaceAttrValues}}
+      '{{@key}}': '{{this}}',
+      {{/each}}
+    },
+    {{/if}}
+
+    {{#if generator.outDir}}outDir: '{{generator.outDir}}',{{/if}}
+    {{#if generator.ext}}ext: '{{generator.ext}}',{{/if}}
+    {{#if generator.prettier}}prettier: {{generator.prettier}},{{/if}}
+    {{#if generator.memo}}memo: {{generator.memo}},{{/if}}
+    {{#if generator.ref}}ref: {{generator.ref}},{{/if}}
+    {{#if generator.filenameCase}}filenameCase: '{{generator.filenameCase}}',{{/if}}
+  },
+  {{/if}}
+});

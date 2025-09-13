@@ -41,7 +41,7 @@ After setting up your configuration file, you can fetch icons from Figma:
 
 ```bash
 # Using the CLI directly
-npx iconsync fetch
+npx @iconsync/core fetch
 
 # Or using a package.json script
 npm run icon:fetch
@@ -53,7 +53,7 @@ After fetching icons, you can generate React components:
 
 ```bash
 # Using the CLI directly
-npx iconsync generator
+npx @iconsync/core generator
 
 # Or using a package.json script
 npm run icon:generate
@@ -64,15 +64,15 @@ npm run icon:generate
 Once your icon components are generated, you can import and use them in your React application:
 
 ```jsx
-import { ArrowRight } from './components/icons';
+import { ArrowRight } from "./components/icons";
 
 export default function IconExample() {
   return (
-    <ArrowRight 
-      width={24} 
-      height={24} 
-      color="currentColor" 
-      title="Arrow Right Icon" 
+    <ArrowRight
+      width={24}
+      height={24}
+      color="currentColor"
+      title="Arrow Right Icon"
     />
   );
 }

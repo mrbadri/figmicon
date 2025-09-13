@@ -11,7 +11,7 @@ Fetch icons from your Figma file:
 npm run icon:fetch
 
 # Or directly with the CLI
-npx iconsync fetch
+npx @iconsync/core fetch
 ```
 
 This will download SVG icons from your configured Figma file and store them in a local cache.
@@ -25,7 +25,7 @@ Generate React components from the fetched icons:
 npm run icon:generate
 
 # Or directly with the CLI
-npx iconsync generator
+npx @iconsync/core generator
 ```
 
 This will create React components in the output directory specified in your configuration.
@@ -36,18 +36,13 @@ Import and use the generated icon components in your React application:
 
 ```jsx
 // Import the generated icon component
-import { ArrowRight } from '../components/icons';
+import { ArrowRight } from "../components/icons";
 
 export default function IconExample() {
   return (
     <div>
       {/* Use the icon component */}
-      <ArrowRight 
-        width={24} 
-        height={24} 
-        color="blue" 
-        title="Go to next page" 
-      />
+      <ArrowRight width={24} height={24} color="blue" title="Go to next page" />
     </div>
   );
 }
